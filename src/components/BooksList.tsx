@@ -19,15 +19,7 @@ const BooksList: React.FC = () => {
   const { books, user, isLoading, setBooks, addBook, removeBook, addBorrowing, setLoading, clearUser } = useStore();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!user) {
-      navigate('/login');
-      return;
-    }
-    fetchBooks();
-  }, [user, navigate]);
-
-  const fetchBooks = async (search?: string) => {
+  const fetchBooks = React.useCallback(async (search?: string) => {
     if (!user) return;
     
     setLoading(true);
@@ -47,7 +39,15 @@ const BooksList: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user, setLoading, setBooks, clearUser, navigate]);
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    fetchBooks();
+  }, [user, navigate, fetchBooks]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();

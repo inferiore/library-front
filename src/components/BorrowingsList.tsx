@@ -10,15 +10,7 @@ const BorrowingsList: React.FC = () => {
   const { borrowings, user, isLoading, setBorrowings, updateBorrowing, setLoading, clearUser } = useStore();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!user) {
-      navigate('/login');
-      return;
-    }
-    fetchBorrowings();
-  }, [user, navigate]);
-
-  const fetchBorrowings = async () => {
+  const fetchBorrowings = React.useCallback(async () => {
     if (!user) return;
     
     setLoading(true);
@@ -38,7 +30,15 @@ const BorrowingsList: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user, setLoading, setBorrowings, clearUser, navigate]);
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    fetchBorrowings();
+  }, [user, navigate, fetchBorrowings]);
 
   const handleReturnBook = async (borrowingId: number) => {
     if (!user || user.role !== 'librarian') return;

@@ -33,21 +33,7 @@ const BookEdit: React.FC = () => {
   const navigate = useNavigate();
   const { user, isLoading, setLoading, updateBook, clearUser } = useStore();
 
-  useEffect(() => {
-    if (!user) {
-      navigate('/login');
-      return;
-    }
-    if (user.role !== 'librarian') {
-      navigate('/books');
-      return;
-    }
-    if (id) {
-      fetchBookDetails(parseInt(id));
-    }
-  }, [id, user, navigate]);
-
-  const fetchBookDetails = async (bookId: number) => {
+  const fetchBookDetails = React.useCallback(async (bookId: number) => {
     if (!user) return;
     
     setLoading(true);
@@ -81,7 +67,21 @@ const BookEdit: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user, setLoading, clearUser, navigate]);
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    if (user.role !== 'librarian') {
+      navigate('/books');
+      return;
+    }
+    if (id) {
+      fetchBookDetails(parseInt(id));
+    }
+  }, [id, user, navigate, fetchBookDetails]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

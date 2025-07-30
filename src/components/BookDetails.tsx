@@ -26,17 +26,20 @@ const BookDetails: React.FC = () => {
   const navigate = useNavigate();
   const { user, isLoading, setLoading, addBorrowing, clearUser } = useStore();
 
-  useEffect(() => {
-    if (!user) {
-      navigate('/login');
-      return;
+  const fetchBookBorrowings = React.useCallback(async (bookId: number) => {
+    if (!user || user.role !== 'librarian') return;
+    
+    try {
+      const data = await borrowingsApi.getBorrowings(user.token);
+      const allBorrowings = data.data || [];
+      const bookBorrowings = allBorrowings.filter((b: any) => b.book_id === bookId);
+      setBorrowings(bookBorrowings);
+    } catch (error) {
+      console.error('Error fetching borrowings:', error);
     }
-    if (id) {
-      fetchBookDetails(parseInt(id));
-    }
-  }, [id, user, navigate]);
+  }, [user, setBorrowings]);
 
-  const fetchBookDetails = async (bookId: number) => {
+  const fetchBookDetails = React.useCallback(async (bookId: number) => {
     if (!user) return;
     
     setLoading(true);
@@ -65,20 +68,17 @@ const BookDetails: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user, setLoading, clearUser, navigate, fetchBookBorrowings]);
 
-  const fetchBookBorrowings = async (bookId: number) => {
-    if (!user || user.role !== 'librarian') return;
-    
-    try {
-      const data = await borrowingsApi.getBorrowings(user.token);
-      const allBorrowings = data.data || [];
-      const bookBorrowings = allBorrowings.filter((b: any) => b.book_id === bookId);
-      setBorrowings(bookBorrowings);
-    } catch (error) {
-      console.error('Error fetching borrowings:', error);
+  useEffect(() => {
+    if (!user) {
+      navigate('/login');
+      return;
     }
-  };
+    if (id) {
+      fetchBookDetails(parseInt(id));
+    }
+  }, [id, user, navigate, fetchBookDetails]);
 
   const handleBorrowBook = async () => {
     if (!user || user.role !== 'member' || !book) return;

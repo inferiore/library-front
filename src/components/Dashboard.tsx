@@ -17,15 +17,7 @@ const Dashboard: React.FC = () => {
   const { user, isLoading, setLoading, clearUser } = useStore();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!user) {
-      navigate('/login');
-      return;
-    }
-    fetchDashboardData();
-  }, [user, navigate]);
-
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = React.useCallback(async () => {
     if (!user) return;
     
     setLoading(true);
@@ -53,7 +45,15 @@ const Dashboard: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user, setLoading, clearUser, navigate]);
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    fetchDashboardData();
+  }, [user, navigate, fetchDashboardData]);
 
   const handleLogout = () => {
     clearUser();

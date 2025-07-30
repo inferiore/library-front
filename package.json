@@ -12,6 +12,7 @@
     "@types/react": "^19.1.9",
     "@types/react-dom": "^19.1.7",
     "@types/react-router-dom": "^5.3.3",
+    "eslint-plugin-react-hooks": "^6.1.0-canary-9be531cd-20250729",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.7.1",
@@ -30,7 +31,11 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn"
+    }
   },
   "browserslist": {
     "production": [

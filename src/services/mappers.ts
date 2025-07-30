@@ -4,8 +4,7 @@ import {
   LibrarianDashboard, 
   MemberDashboard, 
   ApiResponse, 
-  Book, 
-  Borrowing 
+  Book
 } from './api';
 
 // ==========================================
