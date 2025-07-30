@@ -1,0 +1,264 @@
+/* MemberDashboard.css */
+
+.member-dashboard {
+  width: 100%;
+}
+
+/* Statistics Cards for Member */
+.member-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.member-stat-card {
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  border: 1px solid;
+  transition: transform 0.2s;
+}
+
+.member-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.member-stat-card.active {
+  background-color: #e3f2fd;
+  border-color: #bbdefb;
+}
+
+.member-stat-card.total {
+  background-color: #e8f5e8;
+  border-color: #c8e6c9;
+}
+
+.member-stat-card.overdue {
+  border-color: #c8e6c9;
+}
+
+.member-stat-card.overdue.has-overdue {
+  background-color: #ffebee;
+  border-color: #ffcdd2;
+}
+
+.member-stat-card.overdue:not(.has-overdue) {
+  background-color: #e8f5e8;
+}
+
+.member-stat-card h3 {
+  margin: 0 0 10px 0;
+}
+
+.member-stat-card h3.active {
+  color: #1565c0;
+}
+
+.member-stat-card h3.total {
+  color: #2e7d32;
+}
+
+.member-stat-card h3.overdue {
+  color: #2e7d32;
+}
+
+.member-stat-card h3.overdue.has-overdue {
+  color: #d32f2f;
+}
+
+.member-stat-value {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.member-stat-value.active {
+  color: #0d47a1;
+}
+
+.member-stat-value.total {
+  color: #1b5e20;
+}
+
+.member-stat-value.overdue {
+  color: #1b5e20;
+}
+
+.member-stat-value.overdue.has-overdue {
+  color: #b71c1c;
+}
+
+/* Content Grid for Member */
+.member-content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+@media (max-width: 768px) {
+  .member-content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Active Borrowings */
+.active-borrowings-list {
+  display: grid;
+  gap: 15px;
+}
+
+.active-borrowing-item {
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  border: 1px solid #dee2e6;
+  border-left: 4px solid #28a745;
+  transition: background-color 0.2s;
+}
+
+.active-borrowing-item:hover {
+  background-color: #e9ecef;
+}
+
+.active-borrowing-item.overdue {
+  border: 2px solid #dc3545;
+  border-left: 4px solid #dc3545;
+  background-color: #fff5f5;
+}
+
+.borrowing-book-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.borrowing-book-info {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.borrowing-dates {
+  font-size: 12px;
+  color: #666;
+}
+
+.overdue-warning {
+  margin-top: 5px;
+  color: #dc3545;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.due-reminder {
+  margin-top: 5px;
+  color: #856404;
+  font-size: 12px;
+}
+
+.book-detail-btn {
+  margin-top: 10px;
+  padding: 4px 8px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.2s;
+}
+
+.book-detail-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Empty State for Active Borrowings */
+.no-borrowings {
+  text-align: center;
+  padding: 20px;
+}
+
+.no-borrowings p {
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.browse-books-btn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.browse-books-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Borrowing History */
+.history-list {
+  display: grid;
+  gap: 10px;
+}
+
+.history-item {
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  border: 1px solid #dee2e6;
+  border-left: 4px solid #28a745;
+  transition: background-color 0.2s;
+}
+
+.history-item:hover {
+  background-color: #e9ecef;
+}
+
+.history-book-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.history-book-author {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.history-dates {
+  font-size: 12px;
+  color: #666;
+}
+
+/* Card Buttons for Member */
+.member-card-button {
+  width: 100%;
+  padding: 8px 16px;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 15px;
+  transition: background-color 0.2s;
+}
+
+.member-card-button.info {
+  background-color: #17a2b8;
+}
+
+.member-card-button.info:hover {
+  background-color: #138496;
+}
+
+/* Empty State for History */
+.no-history {
+  color: #666;
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+}

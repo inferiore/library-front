@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useStore from '../store/store';
 import { authApi, ApiError } from '../services/api';
+import './Login.css';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('librarian@library.com');
@@ -56,25 +57,19 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '50px auto', padding: '20px' }}>
-      <h1>Library Management System</h1>
-      <h2>Login</h2>
+    <div className="login-container">
+      <h1 className="login-title">Library Management System</h1>
+      <h2 className="login-subtitle">Login</h2>
       
       {error && (
-        <div style={{ 
-          color: 'red', 
-          backgroundColor: '#ffebee', 
-          padding: '10px', 
-          borderRadius: '4px', 
-          marginBottom: '20px' 
-        }}>
+        <div className="login-error">
           {error}
         </div>
       )}
       
-      <form onSubmit={handleLogin}>
-        <div style={{ marginBottom: '15px' }}>
-          <label htmlFor="email" style={{ display: 'block', marginBottom: '5px' }}>
+      <form onSubmit={handleLogin} className="login-form">
+        <div className="form-group">
+          <label htmlFor="email" className="form-label">
             Email:
           </label>
           <input
@@ -84,17 +79,12 @@ const Login: React.FC = () => {
             onChange={(e) => setEmail(e.target.value)}
             disabled={isLoading}
             required
-            style={{ 
-              width: '100%', 
-              padding: '8px', 
-              border: '1px solid #ccc', 
-              borderRadius: '4px' 
-            }}
+            className="form-input"
           />
         </div>
         
-        <div style={{ marginBottom: '20px' }}>
-          <label htmlFor="password" style={{ display: 'block', marginBottom: '5px' }}>
+        <div className="form-group">
+          <label htmlFor="password" className="form-label">
             Password:
           </label>
           <input
@@ -104,33 +94,22 @@ const Login: React.FC = () => {
             onChange={(e) => setPassword(e.target.value)}
             disabled={isLoading}
             required
-            style={{ 
-              width: '100%', 
-              padding: '8px', 
-              border: '1px solid #ccc', 
-              borderRadius: '4px' 
-            }}
+            className="form-input"
           />
         </div>
         
-        <button 
-          type="submit" 
-          disabled={isLoading}
-          style={{ 
-            width: '100%', 
-            padding: '10px', 
-            backgroundColor: isLoading ? '#ccc' : '#007bff', 
-            color: 'white', 
-            border: 'none', 
-            borderRadius: '4px', 
-            cursor: isLoading ? 'not-allowed' : 'pointer' 
-          }}
-        >
-          {isLoading ? 'Logging in...' : 'Login'}
-        </button>
+        <div className="form-group submit">
+          <button 
+            type="submit" 
+            disabled={isLoading}
+            className="login-button"
+          >
+            {isLoading ? 'Logging in...' : 'Login'}
+          </button>
+        </div>
       </form>
       
-      <div style={{ marginTop: '20px', fontSize: '14px', color: '#666' }}>
+      <div className="demo-credentials">
         <p><strong>Demo Credentials:</strong></p>
         <p>Librarian: librarian@library.com / password123</p>
         <p>Member: alice@example.com / password123</p>
