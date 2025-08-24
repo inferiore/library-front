@@ -1,5 +1,7 @@
 // src/services/api.ts
-const API_BASE_URL = 'http://localhost:8000/api';
+
+const API_BASE_URL: any =
+  process.env.REACT_APP_API_URL || "http://localhost:8000/api";
 
 // Types for API responses
 export interface ApiResponse<T> {
@@ -11,7 +13,7 @@ export interface User {
   id: number;
   name: string;
   email: string;
-  role: 'librarian' | 'member';
+  role: "librarian" | "member";
   created_at: string;
   updated_at: string;
 }
@@ -113,7 +115,7 @@ export interface MemberDashboard {
 export class ApiError extends Error {
   constructor(public status: number, message: string, public data?: any) {
     super(message);
-    this.name = 'ApiError';
+    this.name = "ApiError";
   }
 }
 
@@ -132,8 +134,8 @@ class ApiClient {
     const url = `${this.baseURL}${endpoint}`;
     const config: RequestInit = {
       headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
+        "Content-Type": "application/json",
+        Accept: "application/json",
         ...options.headers,
       },
       ...options,
@@ -144,7 +146,11 @@ class ApiClient {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new ApiError(response.status, data.message || 'API request failed', data);
+        throw new ApiError(
+          response.status,
+          data.message || "API request failed",
+          data
+        );
       }
 
       return data;
@@ -152,20 +158,20 @@ class ApiClient {
       if (error instanceof ApiError) {
         throw error;
       }
-      throw new ApiError(0, 'Network error occurred');
+      throw new ApiError(0, "Network error occurred");
     }
   }
 
   private getAuthHeaders(token: string) {
     return {
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     };
   }
 
   // Authentication endpoints
   async login(email: string, password: string): Promise<AuthResponse> {
-    return this.request<AuthResponse>('/login', {
-      method: 'POST',
+    return this.request<AuthResponse>("/login", {
+      method: "POST",
       body: JSON.stringify({ email, password }),
     });
   }
@@ -175,30 +181,30 @@ class ApiClient {
     email: string;
     password: string;
     password_confirmation: string;
-    role: 'librarian' | 'member';
+    role: "librarian" | "member";
   }): Promise<AuthResponse> {
-    return this.request<AuthResponse>('/register', {
-      method: 'POST',
+    return this.request<AuthResponse>("/register", {
+      method: "POST",
       body: JSON.stringify(userData),
     });
   }
 
   async getCurrentUser(token: string): Promise<{ user: User }> {
-    return this.request<{ user: User }>('/me', {
+    return this.request<{ user: User }>("/me", {
       headers: this.getAuthHeaders(token),
     });
   }
 
   async logout(token: string): Promise<{ message: string }> {
-    return this.request<{ message: string }>('/logout', {
-      method: 'POST',
+    return this.request<{ message: string }>("/logout", {
+      method: "POST",
       headers: this.getAuthHeaders(token),
     });
   }
 
   // Books endpoints
   async getBooks(token: string, search?: string): Promise<ApiResponse<Book[]>> {
-    const searchParam = search ? `?search=${encodeURIComponent(search)}` : '';
+    const searchParam = search ? `?search=${encodeURIComponent(search)}` : "";
     return this.request<ApiResponse<Book[]>>(`/books${searchParam}`, {
       headers: this.getAuthHeaders(token),
     });
@@ -220,8 +226,8 @@ class ApiClient {
       total_copies: number;
     }
   ): Promise<ApiResponse<Book>> {
-    return this.request<ApiResponse<Book>>('/books', {
-      method: 'POST',
+    return this.request<ApiResponse<Book>>("/books", {
+      method: "POST",
       headers: this.getAuthHeaders(token),
       body: JSON.stringify(bookData),
     });
@@ -239,7 +245,7 @@ class ApiClient {
     }
   ): Promise<ApiResponse<Book>> {
     return this.request<ApiResponse<Book>>(`/books/${id}`, {
-      method: 'PUT',
+      method: "PUT",
       headers: this.getAuthHeaders(token),
       body: JSON.stringify(bookData),
     });
@@ -247,27 +253,33 @@ class ApiClient {
 
   async deleteBook(token: string, id: number): Promise<{ message: string }> {
     return this.request<{ message: string }>(`/books/${id}`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: this.getAuthHeaders(token),
     });
   }
 
   // Borrowings endpoints
   async getBorrowings(token: string): Promise<ApiResponse<Borrowing[]>> {
-    return this.request<ApiResponse<Borrowing[]>>('/borrowings', {
+    return this.request<ApiResponse<Borrowing[]>>("/borrowings", {
       headers: this.getAuthHeaders(token),
     });
   }
 
-  async getBorrowing(token: string, id: number): Promise<ApiResponse<Borrowing>> {
+  async getBorrowing(
+    token: string,
+    id: number
+  ): Promise<ApiResponse<Borrowing>> {
     return this.request<ApiResponse<Borrowing>>(`/borrowings/${id}`, {
       headers: this.getAuthHeaders(token),
     });
   }
 
-  async borrowBook(token: string, bookId: number): Promise<ApiResponse<Borrowing>> {
-    return this.request<ApiResponse<Borrowing>>('/borrowings', {
-      method: 'POST',
+  async borrowBook(
+    token: string,
+    bookId: number
+  ): Promise<ApiResponse<Borrowing>> {
+    return this.request<ApiResponse<Borrowing>>("/borrowings", {
+      method: "POST",
       headers: this.getAuthHeaders(token),
       body: JSON.stringify({ book_id: bookId }),
     });
@@ -275,20 +287,27 @@ class ApiClient {
 
   async returnBook(token: string, id: number): Promise<ApiResponse<Borrowing>> {
     return this.request<ApiResponse<Borrowing>>(`/borrowings/${id}/return`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: this.getAuthHeaders(token),
     });
   }
 
   // Dashboard endpoints
-  async getLibrarianDashboard(token: string): Promise<ApiResponse<LibrarianDashboard>> {
-    return this.request<ApiResponse<LibrarianDashboard>>('/dashboard/librarian', {
-      headers: this.getAuthHeaders(token),
-    });
+  async getLibrarianDashboard(
+    token: string
+  ): Promise<ApiResponse<LibrarianDashboard>> {
+    return this.request<ApiResponse<LibrarianDashboard>>(
+      "/dashboard/librarian",
+      {
+        headers: this.getAuthHeaders(token),
+      }
+    );
   }
 
-  async getMemberDashboard(token: string): Promise<ApiResponse<MemberDashboard>> {
-    return this.request<ApiResponse<MemberDashboard>>('/dashboard/member', {
+  async getMemberDashboard(
+    token: string
+  ): Promise<ApiResponse<MemberDashboard>> {
+    return this.request<ApiResponse<MemberDashboard>>("/dashboard/member", {
       headers: this.getAuthHeaders(token),
     });
   }
